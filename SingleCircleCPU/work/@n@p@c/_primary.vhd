@@ -2,6 +2,7 @@ library verilog;
 use verilog.vl_types.all;
 entity NPC is
     port(
+        RS              : in     vl_logic_vector(31 downto 0);
         PC              : in     vl_logic_vector(31 downto 0);
         NPCOp           : in     vl_logic_vector(1 downto 0);
         IMM             : in     vl_logic_vector(25 downto 0);

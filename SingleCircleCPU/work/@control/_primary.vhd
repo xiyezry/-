@@ -17,6 +17,7 @@ entity Control is
         ShiftIndex      : out    vl_logic;
         ShiftDirection  : out    vl_logic;
         SArith          : out    vl_logic;
-        ALUasrc         : out    vl_logic
+        ALUasrc         : out    vl_logic;
+        call            : out    vl_logic
     );
 end Control;

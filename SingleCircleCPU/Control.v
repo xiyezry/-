@@ -1,4 +1,4 @@
-module Control(Opcode,Funct,RegDst,MemRead,MemtoReg,ALUOp,MemWrite,ALUSrc,RegWrite,EXTOP,NPCOP,Zero,ShiftIndex,ShiftDirection,SArith,ALUasrc);
+module Control(Opcode,Funct,RegDst,MemRead,MemtoReg,ALUOp,MemWrite,ALUSrc,RegWrite,EXTOP,NPCOP,Zero,ShiftIndex,ShiftDirection,SArith,ALUasrc,call);
 	input [5:0] Opcode; //指令操作码字段	
 	input [5:0] Funct;  //指令功能码字段
 	input Zero;
@@ -16,6 +16,7 @@ module Control(Opcode,Funct,RegDst,MemRead,MemtoReg,ALUOp,MemWrite,ALUSrc,RegWri
 	output ShiftDirection; //移位方向 1为右 2为左
 	output SArith; //移位类型 1：算数移动 0：逻辑移动
 	output ALUasrc; //运算器A操作数选择
+	output call;//约定
 	
 	//使用规约或非确定指令类型
 	wire r_type = ~|Opcode;
@@ -64,13 +65,14 @@ module Control(Opcode,Funct,RegDst,MemRead,MemtoReg,ALUOp,MemWrite,ALUSrc,RegWri
 	wire i_sh = Opcode[5]&~Opcode[4]&Opcode[3]&~Opcode[2]&~Opcode[1]&Opcode[0];
 	
 	
-	assign NPCOP[0] = i_beq&Zero|i_bne&~Zero;
-	assign NPCOP[1] = i_j|i_jal;
+	assign call = i_jal|i_jalr;
+	assign NPCOP[0] = i_beq&Zero|i_bne&~Zero|i_jr|i_jalr;
+	assign NPCOP[1] = i_j|i_jal|i_jr|i_jalr;
 	assign RegDst = i_add|i_sub|i_and|i_or|i_slt|i_sltu|i_addu|i_subu|i_xor|i_nor|i_sll|i_sllv|i_srl|i_srlv|i_sra|i_srav;
 	assign MemRead = i_lw|i_sw;
 	assign MemtoReg = i_lw;
 	assign MemWrite = i_sw;
-	assign RegWrite = i_lw|i_add|i_sub|i_and|i_or|i_slt|i_sltu|i_addu|i_subu|i_addi|i_ori|i_xor|i_nor|i_lui|i_andi|i_slti|i_sll|i_sllv|i_srl|i_srlv|i_sra|i_srav;
+	assign RegWrite = i_lw|i_add|i_sub|i_and|i_or|i_slt|i_sltu|i_addu|i_subu|i_addi|i_ori|i_xor|i_nor|i_lui|i_andi|i_slti|i_sll|i_sllv|i_srl|i_srlv|i_sra|i_srav|i_jalr|i_jal;
 	assign ALUSrc = i_addi|i_ori|i_lw|i_sw|i_andi|i_slti;
 	assign ALUOp[3] = i_xor|i_nor|i_lui;
 	assign ALUOp[2] = i_or|i_slt|i_sltu|i_ori|i_xor|i_nor|i_lui|i_slti;

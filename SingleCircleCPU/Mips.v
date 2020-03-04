@@ -3,7 +3,7 @@ module Mips();
 	reg clk,rst;
 	
 		initial begin
-			$readmemh( "mipstestloopjal_sim.dat" , U_IM.ins_mem); // load instructions into instruction memory
+			$readmemh( "mipstest_extloop.dat" , U_IM.ins_mem); // load instructions into instruction memory
 			
 			clk = 1;
 			rst = 0;
@@ -16,6 +16,7 @@ module Mips();
 			
 //PC 
 	wire[31:0] PC;
+	wire[31:0] RS;
 
 //NPC
 	wire[31:0] NPC;
@@ -25,7 +26,7 @@ module Mips();
 	wire[31:0] Ins;
 	
 //RF
-	wire[4:0] RFWS,RFR1,RFR2;
+	wire[4:0] rfws,RFWS,RFR1,RFR2;
 	wire[31:0] RFDataIn;
 	wire[31:0] RFDataOut1,RFDataOut2;
 	
@@ -53,6 +54,7 @@ module Mips();
 	wire SArith;
 	wire[1:0] NPCOp;
 	wire[3:0] ALUop;
+	wire call;
 	
 //ALU
 	wire[31:0] ALUDataIn1;
@@ -65,12 +67,13 @@ module Mips();
 	
 //Shifter
 	wire[31:0] ShifterIn;
-	wire[31:0] ShifterIndex;
+	wire[4:0] ShifterIndex;
 	wire[31:0] ShifterOut;
-	
+
+	wire[31:0] preRFDataIn;
 	
 //NPC实例化
-	NPC U_Npc(.PC(PC), .NPCOp(NPCOp), .IMM(EXTDataOut), .NPC(NPC));
+	NPC U_Npc(.RS(RS),.PC(PC), .NPCOp(NPCOp), .IMM(EXTDataOut), .NPC(NPC));
 
 //PC实例化
 	PC U_Pc(.clk(clk),.rst(rst),.NPC(NPC),.PC(PC));
@@ -85,7 +88,8 @@ module Mips();
 	assign RFR1 = Ins[25:21];
 	assign RFR2 = Ins[20:16];
 	
-	assign RFWS = (RegDst==1)?Ins[15:11]:Ins[20:16];
+	mux2_5 rfw1(Ins[20:16],Ins[15:11],RegDst,rfws);
+	//assign RFWS = (RegDst==1)?Ins[15:11]:Ins[20:16];
 	
 	assign EXTDataIn = Ins[15:0];
 
@@ -93,28 +97,33 @@ module Mips();
 	RF U_Rf(.clk(clk),.rst(rst),.RFWr(RegWrite),.A1(RFR1),.A2(RFR2),.A3(RFWS),.WD(RFDataIn),.RD1(RFDataOut1),.RD2(RFDataOut2));
 	
 	assign ShifterIn = RFDataOut2;
+	assign RS = RFDataOut1;
 	
 //控制器实例化
-	Control U_Control(.Opcode(op),.Funct(funct),.RegDst(RegDst),.MemRead(MemRead),.MemtoReg(MemToReg),.ALUOp(ALUop),.MemWrite(MemWrite),.ALUSrc(ALUsrc),.RegWrite(RegWrite),.EXTOP(EXTOP),.NPCOP(NPCOp),.Zero(zero),.ShiftIndex(ShiftIndex),.ShiftDirection(ShiftDirection),.SArith(SArith),.ALUasrc(ALUasrc));
+	Control U_Control(.Opcode(op),.Funct(funct),.RegDst(RegDst),.MemRead(MemRead),.MemtoReg(MemToReg),.ALUOp(ALUop),.MemWrite(MemWrite),.ALUSrc(ALUsrc),.RegWrite(RegWrite),.EXTOP(EXTOP),.NPCOP(NPCOp),.Zero(zero),.ShiftIndex(ShiftIndex),.ShiftDirection(ShiftDirection),.SArith(SArith),.ALUasrc(ALUasrc),.call(call));
 
 //扩展器实例化
 	EXT U_Ext(.Imm16(EXTDataIn),.EXTOp(EXTOP),.Imm32(EXTDataOut));
 	
-	assign ALUDataIn2 = (ALUsrc==1)?EXTDataOut:RFDataOut2;
+	mux2_32 alub(RFDataOut2,EXTDataOut,ALUsrc,ALUDataIn2);
+	//assign ALUDataIn2 = (ALUsrc==1)?EXTDataOut:RFDataOut2;
 	
-	assign ShifterIndex = (ShiftIndex==1)?Ins[25:21]:Ins[10:6];
+	mux2_5 shift1(Ins[10:6],Ins[25:21],ShiftIndex,ShifterIndex);
 //移位器实例化
 	Shifter U_Shifter(.orignial(ShifterIn),.index(ShifterIndex),.right(ShiftDirection),.arith(SArith),.result(ShifterOut));
-
-	assign ALUDataIn1 = (ALUasrc==1)?ShifterOut:RFDataOut1;
+	
+	mux2_32 alua(RFDataOut1,ShifterOut,ALUasrc,ALUDataIn1);
+	//assign ALUDataIn1 = (ALUasrc==1)?ShifterOut:RFDataOut1;
 //ALU实例化
 	alu U_Alu(.A(ALUDataIn1), .B(ALUDataIn2), .ALUOp(ALUop), .C(ALUDataOut), .Zero(zero),.Carry(carry),.Negative(negative),.Overflow(overflow));
 	
-	assign RFDataIn = (MemToReg==1)?DMDataOut:ALUDataOut;
-
+	mux2_32 outchoose(ALUDataOut,DMDataOut,MemToReg,preRFDataIn);
 //DM实例化
 	assign DMAdd = ALUDataOut[6:0];
 	datamemory U_Dmem(.DMAdd(DMAdd),.DataIn(RFDataOut2),.DataOut(DMDataOut),.DMW(MemWrite),.DMR(MemRead),.clk(clk));
+	
+	mux2_32 rfDIn(preRFDataIn,PC+4,call,RFDataIn);
+	mux2_5 rfw2(rfws,5'b11111,call,RFWS);
 endmodule
 	
 	
