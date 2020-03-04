@@ -1,0 +1,270 @@
+m255
+K3
+13
+cModel Technology
+dC:\modeltech_10.1a\examples
+T_opt
+VcoE`MXD:j@<oFmae[6BY91
+04 4 4 work Mips fast 0
+=1-c4b301b7bc0f-5e5e32a5-fe-1290
+o-quiet -auto_acc_if_foreign -work work +acc
+n@_opt
+OE;O;10.1a;51
+valu
+!s100 V@[9g8K>7?OES__QB3j4[3
+I>zdBCgS0M>aFSLffR:Q3M0
+VBn`ji@JZJ?f27Qk1NoHCM0
+Z0 dC:\Users\xiye\Desktop\SCPU-student
+w1583154316
+8C:/Users/xiye/Desktop/SCPU-student/alu.v
+FC:/Users/xiye/Desktop/SCPU-student/alu.v
+L0 4
+Z1 OE;L;10.1a;51
+r1
+31
+!s90 -reportprogress|300|-work|work|-vopt|C:/Users/xiye/Desktop/SCPU-student/alu.v|
+Z2 o-work work -L mtiAvm -L mtiOvm -L mtiUvm -L mtiUPF
+!s108 1583231541.410000
+!s107 ctrl_encode_def.v|C:/Users/xiye/Desktop/SCPU-student/alu.v|
+!i10b 1
+!s85 0
+vControl
+IZhPb3Kz7A>LRN7VD`eNMK2
+V3KUX0=4XbG8E_P1?<mKTm3
+Z3 dC:\Users\xiye\Desktop\SCPU-student
+w1583231642
+8C:/Users/xiye/Desktop/SCPU-student/Control.v
+FC:/Users/xiye/Desktop/SCPU-student/Control.v
+L0 1
+R1
+r1
+31
+!s90 -reportprogress|300|-work|work|-vopt|C:/Users/xiye/Desktop/SCPU-student/Control.v|
+R2
+n@control
+!i10b 1
+!s100 6b0ZK1IUcIlYRM6H8QN100
+!s85 0
+!s108 1583231646.158000
+!s107 C:/Users/xiye/Desktop/SCPU-student/Control.v|
+vdata_memory
+IGn59oi82VI6ATM=OZ6B9l3
+VKe6N2DDi8cPMP9;J0DOh=3
+R3
+w1583224121
+8C:/Users/xiye/Desktop/SCPU-student/data_memory.v
+FC:/Users/xiye/Desktop/SCPU-student/data_memory.v
+L0 1
+R1
+r1
+31
+R2
+!s100 h:<d8SGh;G?2k`WehH>=W1
+!s108 1583229115.947000
+!s107 C:/Users/xiye/Desktop/SCPU-student/data_memory.v|
+!s90 -reportprogress|300|-work|work|-vopt|C:/Users/xiye/Desktop/SCPU-student/data_memory.v|
+!i10b 1
+!s85 0
+vdatamemory
+!s100 ao_FcXRJKI`>amJPNB1S>1
+IX0?E1H[QPJI5Uakb9VCNl3
+Ve_SXREeagV3alH=VM;7hN3
+R3
+w1583229316
+8C:/Users/xiye/Desktop/SCPU-student/datamemory.v
+FC:/Users/xiye/Desktop/SCPU-student/datamemory.v
+L0 1
+R1
+r1
+31
+!s90 -reportprogress|300|-work|work|-vopt|C:/Users/xiye/Desktop/SCPU-student/datamemory.v|
+R2
+!s108 1583231541.720000
+!s107 C:/Users/xiye/Desktop/SCPU-student/datamemory.v|
+!i10b 1
+!s85 0
+vEXT
+!s100 JID3Kmd9?6M8HoQ4@U;j91
+IWBR4Je:QgFW[nXG=E_n841
+V<;>E_N0WZjXOmgdkAPRL02
+R3
+w1583227102
+8C:/Users/xiye/Desktop/SCPU-student/EXT.v
+FC:/Users/xiye/Desktop/SCPU-student/EXT.v
+L0 2
+R1
+r1
+31
+!s90 -reportprogress|300|-work|work|-vopt|C:/Users/xiye/Desktop/SCPU-student/EXT.v|
+R2
+n@e@x@t
+!s108 1583231541.829000
+!s107 C:/Users/xiye/Desktop/SCPU-student/EXT.v|
+!i10b 1
+!s85 0
+vinstructionmemory
+!s100 ;nWngfVc=m2J8I1oJM94A1
+I`PGbeibGU2j7PLODm_`;d1
+VgjF5@86f^BoC>3kMe`Niz1
+R3
+w1583231078
+8C:/Users/xiye/Desktop/SCPU-student/instructionmemory.v
+FC:/Users/xiye/Desktop/SCPU-student/instructionmemory.v
+L0 1
+R1
+r1
+31
+!s90 -reportprogress|300|-work|work|-vopt|C:/Users/xiye/Desktop/SCPU-student/instructionmemory.v|
+R2
+!s108 1583231542.045000
+!s107 C:/Users/xiye/Desktop/SCPU-student/instructionmemory.v|
+!i10b 1
+!s85 0
+vMips
+IEiNP90V<JX@ZjJ7`ND]lZ0
+VcG?AS<6?FRhk20XnRNgkR0
+R3
+w1583231529
+8C:/Users/xiye/Desktop/SCPU-student/Mips.v
+FC:/Users/xiye/Desktop/SCPU-student/Mips.v
+L0 1
+R1
+r1
+31
+!s90 -reportprogress|300|-work|work|-vopt|C:/Users/xiye/Desktop/SCPU-student/Mips.v|
+R2
+n@mips
+!s100 1PGafdcf;FBc7Da=d97Gl1
+!s108 1583231542.159000
+!s107 C:/Users/xiye/Desktop/SCPU-student/Mips.v|
+!i10b 1
+!s85 0
+vmux16
+!s100 bKYQX7kfj=QLRBn0143Cb0
+I_n`_1XZO?U36Po^50mG?P2
+V`6=HBldE>cXC;m]K0;QI>0
+R3
+Z4 w1582546053
+Z5 8C:/Users/xiye/Desktop/SCPU-student/mux.v
+Z6 FC:/Users/xiye/Desktop/SCPU-student/mux.v
+L0 72
+R1
+r1
+31
+Z7 !s108 1583231542.273000
+Z8 !s107 C:/Users/xiye/Desktop/SCPU-student/mux.v|
+Z9 !s90 -reportprogress|300|-work|work|-vopt|C:/Users/xiye/Desktop/SCPU-student/mux.v|
+R2
+!i10b 1
+!s85 0
+vmux2
+!s100 ]W`DGQb]]zLoVXiMzDz<M0
+I3S@ILPkgSMB:dUeLQ`cnI1
+VT8RWJBjAIeM]>7U=5kBkT1
+R3
+R4
+R5
+R6
+L0 3
+R1
+r1
+31
+R7
+R8
+R9
+R2
+!i10b 1
+!s85 0
+vmux4
+!s100 [`iPZ>J[fP2hf9PZZQ4Q01
+IDT1L_YS^BoIY8cM347Oai3
+V@m74j;^3XFJ7>OzQXh6V`0
+R3
+R4
+R5
+R6
+L0 16
+R1
+r1
+31
+R7
+R8
+R9
+R2
+!i10b 1
+!s85 0
+vmux8
+!s100 nHclR;<FC8DC0Y98E@4;M1
+IcU0`n?RSGRZz28<ai0^;L3
+VOh>X<_n?620Z_^H7^I9KH2
+R3
+R4
+R5
+R6
+L0 41
+R1
+r1
+31
+R7
+R8
+R9
+R2
+!i10b 1
+!s85 0
+vNPC
+!s100 5dUmX_<Qo?U5QN9dIIBl^2
+IBK2:0b;IW`]BlXcJl0[nF0
+VM0b<M>?BI]?[jjz1eZRi32
+R3
+w1551202020
+8C:/Users/xiye/Desktop/SCPU-student/NPC.v
+FC:/Users/xiye/Desktop/SCPU-student/NPC.v
+L0 3
+R1
+r1
+31
+!s90 -reportprogress|300|-work|work|-vopt|C:/Users/xiye/Desktop/SCPU-student/NPC.v|
+R2
+n@n@p@c
+!s108 1583231542.456000
+!s107 ctrl_encode_def.v|C:/Users/xiye/Desktop/SCPU-student/NPC.v|
+!i10b 1
+!s85 0
+vPC
+!s100 c@llYFO0OOBgM^I07PjON2
+I=V8MV1PAL7W@XHg6I9J7>0
+Vz>ZmmiZ`iG:Zc`EOFokET3
+R3
+w1550113688
+8C:/Users/xiye/Desktop/SCPU-student/PC.v
+FC:/Users/xiye/Desktop/SCPU-student/PC.v
+L0 1
+R1
+r1
+31
+!s90 -reportprogress|300|-work|work|-vopt|C:/Users/xiye/Desktop/SCPU-student/PC.v|
+R2
+n@p@c
+!s108 1583231542.633000
+!s107 C:/Users/xiye/Desktop/SCPU-student/PC.v|
+!i10b 1
+!s85 0
+vRF
+!s100 kg:DeZdNl<9G`3PR@?KB>2
+I^>GIR[^]VHa5XJh25D9gE1
+VH4_Vi@<TC>LcH5V_c:S5l2
+R3
+w1583230257
+8C:/Users/xiye/Desktop/SCPU-student/RF.v
+FC:/Users/xiye/Desktop/SCPU-student/RF.v
+L0 2
+R1
+r1
+31
+!s90 -reportprogress|300|-work|work|-vopt|C:/Users/xiye/Desktop/SCPU-student/RF.v|
+R2
+n@r@f
+!s108 1583231542.867000
+!s107 C:/Users/xiye/Desktop/SCPU-student/RF.v|
+!i10b 1
+!s85 0

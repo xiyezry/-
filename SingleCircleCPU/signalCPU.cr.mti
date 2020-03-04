@@ -1,0 +1,67 @@
+C:/Users/xiye/Desktop/SCPU-student/instructionmemory.v {1 {vlog -work work -vopt C:/Users/xiye/Desktop/SCPU-student/instructionmemory.v
+Model Technology ModelSim SE vlog 10.1a Compiler 2012.02 Feb 22 2012
+-- Compiling module instructionmemory
+
+Top level modules:
+	instructionmemory
+
+} {} {}} C:/Users/xiye/Desktop/SCPU-student/shifter.v {1 {vlog -work work -vopt C:/Users/xiye/Desktop/SCPU-student/shifter.v
+Model Technology ModelSim SE vlog 10.1a Compiler 2012.02 Feb 22 2012
+-- Compiling module Shifter
+
+Top level modules:
+	Shifter
+
+} {} {}} C:/Users/xiye/Desktop/SCPU-student/instruction_def.v {1 {vlog -work work -vopt C:/Users/xiye/Desktop/SCPU-student/instruction_def.v
+Model Technology ModelSim SE vlog 10.1a Compiler 2012.02 Feb 22 2012
+
+} {} {}} C:/Users/xiye/Desktop/SCPU-student/Control.v {1 {vlog -work work -vopt C:/Users/xiye/Desktop/SCPU-student/Control.v
+Model Technology ModelSim SE vlog 10.1a Compiler 2012.02 Feb 22 2012
+-- Compiling module Control
+
+Top level modules:
+	Control
+
+} {} {}} C:/Users/xiye/Desktop/SCPU-student/Mips.v {1 {vlog -work work -vopt C:/Users/xiye/Desktop/SCPU-student/Mips.v
+Model Technology ModelSim SE vlog 10.1a Compiler 2012.02 Feb 22 2012
+-- Compiling module Mips
+
+Top level modules:
+	Mips
+
+} {} {}} C:/Users/xiye/Desktop/SCPU-student/EXT.v {1 {vlog -work work -vopt C:/Users/xiye/Desktop/SCPU-student/EXT.v
+Model Technology ModelSim SE vlog 10.1a Compiler 2012.02 Feb 22 2012
+-- Compiling module EXT
+
+Top level modules:
+	EXT
+
+} {} {}} C:/Users/xiye/Desktop/SCPU-student/alu.v {1 {vlog -work work -vopt C:/Users/xiye/Desktop/SCPU-student/alu.v
+Model Technology ModelSim SE vlog 10.1a Compiler 2012.02 Feb 22 2012
+-- Compiling module alu
+
+Top level modules:
+	alu
+
+} {} {}} C:/Users/xiye/Desktop/SCPU-student/PC.v {1 {vlog -work work -vopt C:/Users/xiye/Desktop/SCPU-student/PC.v
+Model Technology ModelSim SE vlog 10.1a Compiler 2012.02 Feb 22 2012
+-- Compiling module PC
+
+Top level modules:
+	PC
+
+} {} {}} C:/Users/xiye/Desktop/SCPU-student/datamemory.v {1 {vlog -work work -vopt C:/Users/xiye/Desktop/SCPU-student/datamemory.v
+Model Technology ModelSim SE vlog 10.1a Compiler 2012.02 Feb 22 2012
+-- Compiling module datamemory
+
+Top level modules:
+	datamemory
+
+} {} {}} C:/Users/xiye/Desktop/SCPU-student/RF.v {1 {vlog -work work -vopt C:/Users/xiye/Desktop/SCPU-student/RF.v
+Model Technology ModelSim SE vlog 10.1a Compiler 2012.02 Feb 22 2012
+-- Compiling module RF
+
+Top level modules:
+	RF
+
+} {} {}}
