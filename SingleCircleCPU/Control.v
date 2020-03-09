@@ -1,4 +1,4 @@
-module Control(Opcode,Funct,RegDst,MemRead,MemtoReg,ALUOp,MemWrite,ALUSrc,RegWrite,EXTOP,NPCOP,Zero,ShiftIndex,ShiftDirection,SArith,ALUasrc,call);
+module Control(Opcode,Funct,RegDst,MemRead,MemtoReg,ALUOp,MemWrite,ALUSrc,RegWrite,EXTOP,NPCOP,Zero,ShiftIndex,ShiftDirection,SArith,ALUasrc,call,SpLoad,BorH,SorU,SpecialIn,DMemBorH);
 	input [5:0] Opcode; //指令操作码字段	
 	input [5:0] Funct;  //指令功能码字段
 	input Zero;
@@ -17,6 +17,13 @@ module Control(Opcode,Funct,RegDst,MemRead,MemtoReg,ALUOp,MemWrite,ALUSrc,RegWri
 	output SArith; //移位类型 1：算数移动 0：逻辑移动
 	output ALUasrc; //运算器A操作数选择
 	output call;//约定
+	output SpLoad;//若为1 则表示为lh lb lhu lbu指令
+	output BorH;
+	output SorU; //1为unsigned 0为signed
+	output SpecialIn;
+	output DMemBorH;
+
+
 	
 	//使用规约或非确定指令类型
 	wire r_type = ~|Opcode;
@@ -60,6 +67,7 @@ module Control(Opcode,Funct,RegDst,MemRead,MemtoReg,ALUOp,MemWrite,ALUSrc,RegWri
 	wire i_slti = ~Opcode[5]&~Opcode[4]&Opcode[3]&~Opcode[2]&Opcode[1]&~Opcode[0];
 	wire i_lb = Opcode[5]&~Opcode[4]&~Opcode[3]&~Opcode[2]&~Opcode[1]&~Opcode[0];
 	wire i_lbu = Opcode[5]&~Opcode[4]&~Opcode[3]&Opcode[2]&~Opcode[1]&~Opcode[0];
+	wire i_lh = Opcode[5]&~Opcode[4]&~Opcode[3]&~Opcode[2]&~Opcode[1]&Opcode[0];
 	wire i_lhu = Opcode[5]&~Opcode[4]&~Opcode[3]&Opcode[2]&~Opcode[1]&Opcode[0]; 
 	wire i_sb = Opcode[5]&~Opcode[4]&Opcode[3]&~Opcode[2]&~Opcode[1]&~Opcode[0];
 	wire i_sh = Opcode[5]&~Opcode[4]&Opcode[3]&~Opcode[2]&~Opcode[1]&Opcode[0];
@@ -69,19 +77,24 @@ module Control(Opcode,Funct,RegDst,MemRead,MemtoReg,ALUOp,MemWrite,ALUSrc,RegWri
 	assign NPCOP[0] = i_beq&Zero|i_bne&~Zero|i_jr|i_jalr;
 	assign NPCOP[1] = i_j|i_jal|i_jr|i_jalr;
 	assign RegDst = i_add|i_sub|i_and|i_or|i_slt|i_sltu|i_addu|i_subu|i_xor|i_nor|i_sll|i_sllv|i_srl|i_srlv|i_sra|i_srav;
-	assign MemRead = i_lw|i_sw;
-	assign MemtoReg = i_lw;
-	assign MemWrite = i_sw;
-	assign RegWrite = i_lw|i_add|i_sub|i_and|i_or|i_slt|i_sltu|i_addu|i_subu|i_addi|i_ori|i_xor|i_nor|i_lui|i_andi|i_slti|i_sll|i_sllv|i_srl|i_srlv|i_sra|i_srav|i_jalr|i_jal;
-	assign ALUSrc = i_addi|i_ori|i_lw|i_sw|i_andi|i_slti;
+	assign MemRead = i_lw|i_sw|i_lb|i_lbu|i_lh|i_lhu;
+	assign MemtoReg = i_lw|i_lb|i_lbu|i_lh|i_lhu;
+	assign MemWrite = i_sw|i_sb|i_sh;
+	assign RegWrite = i_lw|i_add|i_sub|i_and|i_or|i_slt|i_sltu|i_addu|i_subu|i_addi|i_ori|i_xor|i_nor|i_lui|i_andi|i_slti|i_sll|i_sllv|i_srl|i_srlv|i_sra|i_srav|i_jalr|i_jal|i_lb|i_lbu|i_lh|i_lhu;
+	assign ALUSrc = i_addi|i_ori|i_lw|i_sw|i_andi|i_slti|i_lb|i_lbu|i_lh|i_lhu|i_sh|i_sb|i_lui;
 	assign ALUOp[3] = i_xor|i_nor|i_lui;
 	assign ALUOp[2] = i_or|i_slt|i_sltu|i_ori|i_xor|i_nor|i_lui|i_slti;
 	assign ALUOp[1] = i_sub|i_and|i_sltu|i_subu|i_beq|i_nor|i_andi|i_bne;
-	assign ALUOp[0] = i_add|i_and|i_slt|i_addu|i_addi|i_lw|i_sw|i_xor|i_andi|i_slti;
-	assign EXTOP = i_addi|i_lw|i_sw;
+	assign ALUOp[0] = i_add|i_and|i_slt|i_addu|i_addi|i_lw|i_sw|i_xor|i_andi|i_slti|i_lb|i_lbu|i_lh|i_lhu;
+	assign EXTOP = i_addi|i_lw|i_sw|i_lb|i_lbu|i_lh|i_lhu|i_sh|i_sb;
 	assign ShiftIndex = i_sllv|i_srlv|i_srav;
 	assign ShiftDirection = i_srl|i_srlv|i_sra|i_srav; 
 	assign SArith = i_sra|i_srav; 
 	assign ALUasrc = i_sll|i_sllv|i_srl|i_srlv|i_sra|i_srav; 
+	assign SpLoad = i_lb|i_lbu|i_lh|i_lhu;
+	assign BorH = i_lh|i_lhu;
+	assign SorU = i_lbu|i_lhu;
+	assign SpecialIn = i_sb|i_sh;
+	assign DMemBorH = i_sh;
 	
 endmodule

@@ -1,7 +1,7 @@
 //运算器实现
 `include "ctrl_encode_def.v"
 
-module alu(A, B, Shift, ALUOp, C, Zero,Carry,Negative,Overflow);
+module alu(A, B, Shift, ALUOp, C, Zero,Carry,Negative,Overflow,LastTwo);
            
 	input  signed [31:0] A, B;
 	input         [3:0]  ALUOp;
@@ -11,6 +11,7 @@ module alu(A, B, Shift, ALUOp, C, Zero,Carry,Negative,Overflow);
 	output Carry;
 	output Negative;
 	output Overflow;
+	output [1:0]LastTwo;
    
 	reg Zero_temp;
 	reg Carry_temp;
@@ -23,6 +24,7 @@ module alu(A, B, Shift, ALUOp, C, Zero,Carry,Negative,Overflow);
 	assign Negative = Negative_temp;
 	assign Overflow = Overflow_temp;
 	assign C = C_temp;
+	assign LastTwo = C_temp[1:0];
 	
 	wire [7:0] zero_flag;
 	wire [7:0] carry_flag;
