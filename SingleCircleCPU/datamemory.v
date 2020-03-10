@@ -15,7 +15,9 @@ module datamemory(SpecialIn,BorH,LastTwo,DMAdd,DataIn,DataOut,DMW,DMR,clk);
 	always@(posedge clk)
 	begin
 		if(DMW && !SpecialIn)
+			begin
 			data_mem[DMAdd] <= DataIn;
+			end
 		else if(DMW && SpecialIn && !BorH)
 			begin
 				case (LastTwo)
@@ -33,8 +35,8 @@ module datamemory(SpecialIn,BorH,LastTwo,DMAdd,DataIn,DataOut,DMW,DMR,clk);
 					1'b1: data_mem[DMAdd][31:16] <=DataIn[15:0];
 					default: data_mem[DMAdd] = data_mem[DMAdd];
 				endcase
-			end		
+			end
 	end
-	
+
 	assign DataOut = data_mem[DMAdd];
 endmodule
