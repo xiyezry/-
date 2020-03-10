@@ -19,4 +19,5 @@
 `define ALU_LUI   4'b1100
 `define ALU_XOR   4'b1101
 `define ALU_NOR   4'b1110
+`define ALU_SpADD 4'b1111
 
