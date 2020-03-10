@@ -123,7 +123,7 @@ module Mips();
 	mux2_32 alub(RFDataOut2,EXTDataOut,ALUsrc,ALUDataIn2);
 	//assign ALUDataIn2 = (ALUsrc==1)?EXTDataOut:RFDataOut2;
 	
-	mux2_5 shift1(Ins[10:6],Ins[25:21],ShiftIndex,ShifterIndex);
+	mux2_5 shift1(Ins[10:6],RFDataOut1[5:0],ShiftIndex,ShifterIndex);
 //移位器实例化
 	Shifter U_Shifter(.orignial(ShifterIn),.index(ShifterIndex),.right(ShiftDirection),.arith(SArith),.result(ShifterOut));
 	
@@ -139,8 +139,8 @@ module Mips();
 	
 	mux2_32 rfDIn(LoadOrNotOut,PC+4,call,RFDataIn);
 	mux2_5 rfw2(rfws,5'b11111,call,RFWS);
-	mux4 loadbyte(preRFDataIn[7:0],preRFDataIn[15:8],preRFDataIn[23:16],preRFDataIn[31:24],ALUDataOut[1:0],LoadbyteOut);
-	mux2_16 loadhalf(preRFDataIn[15:0],preRFDataIn[31:16],ALUDataOut[1],LoadhalfOut);
+	mux4 loadbyte(preRFDataIn[7:0],preRFDataIn[15:8],preRFDataIn[23:16],preRFDataIn[31:24],LastTwo[1:0],LoadbyteOut);
+	mux2_16 loadhalf(preRFDataIn[15:0],preRFDataIn[31:16],LastTwo[1],LoadhalfOut);
 	mux2_32 loadExtOut(ByteEXTOut,HalfEXTOut,BorH,LoadEXTOut);
 	mux2_32 LoadOrNot(preRFDataIn,LoadEXTOut,Spload,LoadOrNotOut);
 
