@@ -48,7 +48,7 @@ module Control(Opcode,Funct,RegDst,MemRead,MemtoReg,ALUOp,MemWrite,ALUSrc,RegWri
     wire i_sra = r_type&~Funct[5]&~Funct[4]&~Funct[3]&~Funct[2]&Funct[1]&Funct[0];
     wire i_jr = r_type&~Funct[5]&~Funct[4]&Funct[3]&~Funct[2]&~Funct[1]&~Funct[0];
 	wire i_jalr = r_type&~Funct[5]&~Funct[4]&Funct[3]&~Funct[2]&~Funct[1]&Funct[0];
-	wire i_srav = r_type&Funct[5]&Funct[4]&Funct[3]&~Funct[2]&~Funct[1]&~Funct[0];
+	wire i_srav = r_type&~Funct[5]&~Funct[4]&~Funct[3]&Funct[2]&Funct[1]&Funct[0];
 	
 	
 	//如果不是R型指令，则根据Opcode，确定是哪一种指令
@@ -77,15 +77,15 @@ module Control(Opcode,Funct,RegDst,MemRead,MemtoReg,ALUOp,MemWrite,ALUSrc,RegWri
 	assign NPCOP[0] = i_beq&Zero|i_bne&~Zero|i_jr|i_jalr;
 	assign NPCOP[1] = i_j|i_jal|i_jr|i_jalr;
 	assign RegDst = i_add|i_sub|i_and|i_or|i_slt|i_sltu|i_addu|i_subu|i_xor|i_nor|i_sll|i_sllv|i_srl|i_srlv|i_sra|i_srav;
-	assign MemRead = i_lw|i_sw|i_lb|i_lbu|i_lh|i_lhu;
+	assign MemRead = i_lw|i_lb|i_lbu|i_lh|i_lhu;
 	assign MemtoReg = i_lw|i_lb|i_lbu|i_lh|i_lhu;
 	assign MemWrite = i_sw|i_sb|i_sh;
 	assign RegWrite = i_lw|i_add|i_sub|i_and|i_or|i_slt|i_sltu|i_addu|i_subu|i_addi|i_ori|i_xor|i_nor|i_lui|i_andi|i_slti|i_sll|i_sllv|i_srl|i_srlv|i_sra|i_srav|i_jalr|i_jal|i_lb|i_lbu|i_lh|i_lhu;
 	assign ALUSrc = i_addi|i_ori|i_lw|i_sw|i_andi|i_slti|i_lb|i_lbu|i_lh|i_lhu|i_sh|i_sb|i_lui;
-	assign ALUOp[3] = i_xor|i_nor|i_lui;
-	assign ALUOp[2] = i_or|i_slt|i_sltu|i_ori|i_xor|i_nor|i_lui|i_slti;
-	assign ALUOp[1] = i_sub|i_and|i_sltu|i_subu|i_beq|i_nor|i_andi|i_bne;
-	assign ALUOp[0] = i_add|i_and|i_slt|i_addu|i_addi|i_lw|i_sw|i_xor|i_andi|i_slti|i_lb|i_lbu|i_lh|i_lhu;
+	assign ALUOp[3] = i_xor|i_nor|i_lui|i_sb|i_sh|i_lb|i_lbu|i_lh|i_lhu;
+	assign ALUOp[2] = i_or|i_slt|i_sltu|i_ori|i_xor|i_nor|i_lui|i_slti|i_sb|i_sh|i_lb|i_lbu|i_lh|i_lhu;
+	assign ALUOp[1] = i_sub|i_and|i_sltu|i_subu|i_beq|i_nor|i_andi|i_bne|i_sb|i_sh|i_lb|i_lbu|i_lh|i_lhu;
+	assign ALUOp[0] = i_add|i_and|i_slt|i_addu|i_addi|i_lw|i_sw|i_xor|i_andi|i_slti|i_lb|i_lbu|i_lh|i_lhu|i_sh|i_sb;
 	assign EXTOP = i_addi|i_lw|i_sw|i_lb|i_lbu|i_lh|i_lhu|i_sh|i_sb;
 	assign ShiftIndex = i_sllv|i_srlv|i_srav;
 	assign ShiftDirection = i_srl|i_srlv|i_sra|i_srav; 
@@ -93,7 +93,7 @@ module Control(Opcode,Funct,RegDst,MemRead,MemtoReg,ALUOp,MemWrite,ALUSrc,RegWri
 	assign ALUasrc = i_sll|i_sllv|i_srl|i_srlv|i_sra|i_srav; 
 	assign SpLoad = i_lb|i_lbu|i_lh|i_lhu;
 	assign BorH = i_lh|i_lhu;
-	assign SorU = i_lbu|i_lhu;
+	assign SorU = i_lb|i_lh;
 	assign SpecialIn = i_sb|i_sh;
 	assign DMemBorH = i_sh;
 	
