@@ -9,6 +9,7 @@ module EXT( Imm16, EXTOp, Imm32 );
        
 endmodule
 
+//8位的符号拓展 用以拓展字节使用
 module EXT_8( Imm8, EXTOp, Imm32 );
     
    input  [7:0] Imm8;
