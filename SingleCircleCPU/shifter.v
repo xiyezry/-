@@ -1,19 +1,13 @@
-//right 1:右移 0：左移
-//index 1:25-21 0:10-6
-//arith 1:1补空 0:0补空
-
 module Shifter(orignial,index,right,arith,result);
-
-	input[31:0] orignial;
-	input[4:0] index;
-	input right,arith;
-	
-	output[31:0] result;
+	input right;          //0为左移，1为右移
+	input arith;          //0为逻辑移动、1为算数移动
+	input[31:0] orignial; //原始输入数据
+	input[4:0] index;     //移动位数	  
+	output[31:0] result;  //移位后结果
 	
 	reg[31:0] result;
 	
-	always@*
-	begin
+	always@(*) begin
 	if(!right)
 		begin
 		result = orignial<<index;
