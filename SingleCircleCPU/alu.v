@@ -1,11 +1,10 @@
 //运算器实现
 `include "ctrl_encode_def.v"
 
-module alu(A, B, Shift, ALUOp, C, Zero,Carry,Negative,Overflow,LastTwo);
+module alu(A, B, ALUOp, C, Zero,Carry,Negative,Overflow,LastTwo);
            
 	input  signed [31:0] A, B;
 	input         [3:0]  ALUOp;
-	input [5:0] Shift;
 	output signed [31:0] C;
 	output Zero;
 	output Carry;
@@ -184,7 +183,7 @@ module alu(A, B, Shift, ALUOp, C, Zero,Carry,Negative,Overflow,LastTwo);
             else if(C_temp2[31]==0)
 				Negative_temp=0;
 			end  
-		  4'b1111:
+		  4'b1111: //ALU_SPADD
 			begin
 				C_temp = A + B;
 				if( C_temp[31] == 1 )
