@@ -28,39 +28,6 @@
             $display("r[%2d] = 0x%8X,", A3, WD);
           end
       end
-//        else if(RFWr&&SpIN&&!BorH)
-//          begin
-//            if(SorU)
-//              begin
-//                case (LastTwo)
-//                  2'b00:rf[A3][7:0]<= WD[7:0];
-//                  2'b01:rf[A3][15:8]<= WD[7:0];
-//                  2'b10:rf[A3][23:16]<= WD[7:0];
-//                  2'b11:rf[A3][31:24]<= WD[7:0];
-//                endcase
-//                $display("r[00-07]=0x%8X, 0x%8X, 0x%8X, 0x%8X, 0x%8X, 0x%8X, 0x%8X, 0x%8X", 0, rf[1], rf[2], rf[3], rf[4], rf[5], rf[6], rf[7]);
-//                $display("r[08-15]=0x%8X, 0x%8X, 0x%8X, 0x%8X, 0x%8X, 0x%8X, 0x%8X, 0x%8X", rf[8], rf[9], rf[10], rf[11], rf[12], rf[13], rf[14], rf[15]);
-//                $display("r[16-23]=0x%8X, 0x%8X, 0x%8X, 0x%8X, 0x%8X, 0x%8X, 0x%8X, 0x%8X", rf[16], rf[17], rf[18], rf[19], rf[20], rf[21], rf[22], rf[23]);
-//                $display("r[24-31]=0x%8X, 0x%8X, 0x%8X, 0x%8X, 0x%8X, 0x%8X, 0x%8X, 0x%8X", rf[24], rf[25], rf[26], rf[27], rf[28], rf[29], rf[30], rf[31]);
-//                $display("r[%2d] = 0x%8X,", A3, WD);
-//              end
-//            else
-//              begin
-//              end
-//          end
-//        else if(RFWr&&SpIN&&BorH)
-//          begin
-//            case (LastTwo[1])
-//              1'b0:rf[A3][15:0]<= WD[15:0];
-//              1'b1:rf[A3][31:16]<= WD[15:0];
-//            endcase
-//            $display("r[00-07]=0x%8X, 0x%8X, 0x%8X, 0x%8X, 0x%8X, 0x%8X, 0x%8X, 0x%8X", 0, rf[1], rf[2], rf[3], rf[4], rf[5], rf[6], rf[7]);
-//            $display("r[08-15]=0x%8X, 0x%8X, 0x%8X, 0x%8X, 0x%8X, 0x%8X, 0x%8X, 0x%8X", rf[8], rf[9], rf[10], rf[11], rf[12], rf[13], rf[14], rf[15]);
-//            $display("r[16-23]=0x%8X, 0x%8X, 0x%8X, 0x%8X, 0x%8X, 0x%8X, 0x%8X, 0x%8X", rf[16], rf[17], rf[18], rf[19], rf[20], rf[21], rf[22], rf[23]);
-//            $display("r[24-31]=0x%8X, 0x%8X, 0x%8X, 0x%8X, 0x%8X, 0x%8X, 0x%8X, 0x%8X", rf[24], rf[25], rf[26], rf[27], rf[28], rf[29], rf[30], rf[31]);
-//            $display("r[%2d] = 0x%8X,", A3, WD);
-//          end
-//      end
   assign RD1 = (A1 != 0) ? rf[A1] : 0;
   assign RD2 = (A2 != 0) ? rf[A2] : 0;
 
