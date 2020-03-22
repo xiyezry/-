@@ -35,6 +35,7 @@ module datamemory(SpecialIn,BorH,LastTwo,DMAdd,DataIn,DataOut,DMW,DMR,clk);
 					default: data_mem[DMAdd] = data_mem[DMAdd];
 				endcase
 			end	
+		$display("ram: 0x%8X,0x%8X,0x%8X,0x%8X,0x%8X,0x%8X,0x%8X,0x%8X ",data_mem[0],data_mem[0],data_mem[1],data_mem[2],data_mem[3],data_mem[4],data_mem[5],data_mem[6],data_mem[7]);
 	end
 	
 	assign DataOut = data_mem[DMAdd];
