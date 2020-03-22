@@ -3,10 +3,10 @@ module Mips();
 	reg clk,rst;
 	
 		initial begin
-			$readmemh( "C:/Users/xiye/Desktop/SCPU-student/extendedtest.dat" , U_IM.ins_mem); // load instructions into instruction memory
+			//$readmemh( "C:/Users/xiye/Desktop/SCPU-student/extendedtest.dat" , U_IM.ins_mem); // load instructions into instruction memory
 			//$readmemh( "mipstest_extloop.dat" , U_IM.ins_mem); // load instructions into instruction memory
 			//$readmemh( "mipstestloopjal_sim.dat" , U_IM.ins_mem); // load instructions into instruction memory
-			
+			$readmemh( "C:/Users/xiye/Desktop/SCPU-student/mipstestloop_sim.dat" , U_IM.ins_mem); // load instructions into instruction memory
 			clk = 1;
 			rst = 0;
 			#5 rst = 1;
@@ -118,17 +118,17 @@ module Mips();
 	datamemory U_Dmem(.SpecialIn(SpecialIn),.BorH(DMemBorH),.LastTwo(LastTwo),.DMAdd(DMAdd),.DataIn(RFDataOut2),.DataOut(DMDataOut),.DMW(MemWrite),.DMR(MemRead),.clk(clk));
 
 //多路选择器实例化	
-	mux2_5 rfw1(Ins[20:16],Ins[15:11],RegDst,rfws);	
-	mux2_5 rfw2(rfws,5'b11111,call,RFWS);
-	mux2_5 shift1(Ins[10:6],RFDataOut1[4:0],ShiftIndex,ShifterIndex);
-	mux2_16 loadhalf(preRFDataIn[15:0],preRFDataIn[31:16],LastTwo[1],LoadhalfOut);
-	mux2_32 alub(RFDataOut2,EXTDataOut,ALUsrc,ALUDataIn2);
-	mux2_32 rfDIn(LoadOrNotOut,PC+4,call,RFDataIn);
-	mux2_32 loadExtOut(ByteEXTOut,HalfEXTOut,BorH,LoadEXTOut);
-	mux2_32 LoadOrNot(preRFDataIn,LoadEXTOut,Spload,LoadOrNotOut);
-	mux2_32 outchoose(ALUDataOut,DMDataOut,MemToReg,preRFDataIn);
-	mux2_32 alua(RFDataOut1,ShifterOut,ALUasrc,ALUDataIn1);
-	mux4 loadbyte(preRFDataIn[7:0],preRFDataIn[15:8],preRFDataIn[23:16],preRFDataIn[31:24],LastTwo[1:0],LoadbyteOut);
+	mux2_5 rfw1(Ins[20:16],Ins[15:11],RegDst,rfws);	//写寄存器2路选择器（一）用于确定是写入20-16位还是15-11位 其中控制信号为RegDst
+	mux2_5 rfw2(rfws,5'b11111,call,RFWS);//写寄存器2路选择器（二）用于确定是写入一选择的寄存器还是31号寄存器 其中控制信号位Call
+	mux2_5 shift1(Ins[10:6],RFDataOut1[4:0],ShiftIndex,ShifterIndex);//移位器源操作数选择器 如果有移位操作则置位1 其中控制信号为ShiftIndex
+	mux2_32 alua(RFDataOut1,ShifterOut,ALUasrc,ALUDataIn1);//ALU第一个操作数选择器，从寄存器组中读出的第一个数据和移位器的数据中进行选择 
+	mux2_32 alub(RFDataOut2,EXTDataOut,ALUsrc,ALUDataIn2);//ALU第二个操作数选择器，从拓展后的imm和寄存器组中读出的第二个数进行选择
+	mux4 loadbyte(preRFDataIn[7:0],preRFDataIn[15:8],preRFDataIn[23:16],preRFDataIn[31:24],LastTwo[1:0],LoadbyteOut);//字节源操作数选择器
+	mux2_16 loadhalf(preRFDataIn[15:0],preRFDataIn[31:16],LastTwo[1],LoadhalfOut);//半字源操作数选择器，以LastTwo信号的高位作为控制信号
+	mux2_32 loadExtOut(ByteEXTOut,HalfEXTOut,BorH,LoadEXTOut);//半字、字节操作选择器
+	mux2_32 outchoose(ALUDataOut,DMDataOut,MemToReg,preRFDataIn);//寄存器堆写操作数选择（一），从运算器和数据存储器的输出中进行选择
+	mux2_32 LoadOrNot(preRFDataIn,LoadEXTOut,Spload,LoadOrNotOut);//寄存器堆写操作数选择（二），从（一）和特殊Load中选择
+	mux2_32 rfDIn(LoadOrNotOut,PC+4,call,RFDataIn);//寄存器堆写操作数选择（三），从（二）和PC+4（仅jal|jalr指令）中选择
 endmodule
 	
 	
