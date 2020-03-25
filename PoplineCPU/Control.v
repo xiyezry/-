@@ -1,7 +1,6 @@
-module Control(Opcode,Funct,RegDst,MemRead,MemtoReg,ALUOp,MemWrite,ALUSrc,RegWrite,EXTOP,NPCOP,Zero,ShiftIndex,ShiftDirection,ALUasrc,call);
+module Control(Opcode,Funct,RegDst,MemRead,MemtoReg,ALUOp,MemWrite,ALUSrc,RegWrite,EXTOP,NPCOP,ShiftIndex,ShiftDirection,ALUasrc,call);
 	input [5:0] Opcode;    //指令操作码字段	
 	input [5:0] Funct;     //指令功能码字段
-	input Zero;            //零标志位，用于bne、beq条件的判断 从ALU中输入
 	output RegDst;         //寄存器写输入选择 20-16为0,15-11为1.
 	output MemRead;        //读数据存储器
 	output MemtoReg;       //寄存器堆写操作数选择
@@ -68,8 +67,8 @@ module Control(Opcode,Funct,RegDst,MemRead,MemtoReg,ALUOp,MemWrite,ALUSrc,RegWri
 	
 	
 	assign call = i_jal|i_jalr;
-	assign NPCOP[0] = i_beq&Zero|i_bne&~Zero|i_jr|i_jalr;
 	assign NPCOP[1] = i_j|i_jal|i_jr|i_jalr;
+	assign NPCOP[0] = i_beq|i_bne|i_jr|i_jalr;
 	assign RegDst = i_add|i_sub|i_and|i_or|i_slt|i_sltu|i_addu|i_subu|i_nor|i_sll|i_sllv|i_srl|i_srlv;
 	assign MemRead = i_lw;
 	assign MemtoReg = i_lw;
