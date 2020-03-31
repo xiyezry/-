@@ -9,6 +9,8 @@ module exe_mem( input clk,
                 input  exe_MemtoReg,
                 input  exe_MemWrite,
                 input  exe_RegWrite,
+                input  exe_call,
+                input[31:0] exe_pcplus4,
                 output  reg[31:0] mem_inst,
                 output  reg[31:0] mem_RFRD2,
                 output  reg[31:0] mem_ALUOUT,
@@ -17,9 +19,11 @@ module exe_mem( input clk,
                 output  reg mem_MemRead,
                 output  reg mem_MemtoReg,
                 output  reg mem_MemWrite,
-                output  reg mem_RegWrite);
+                output  reg mem_RegWrite,
+                output  reg mem_call,
+                output reg[31:0] mem_pcplus4);
 
-    always @ (posedge clk) begin
+    always @ (posedge clk,posedge rst) begin
         if(rst)
         begin
             mem_inst   <= 32'h00000000;
@@ -31,6 +35,8 @@ module exe_mem( input clk,
             mem_MemtoReg <= 0;
             mem_MemWrite <= 0;
             mem_RegWrite <= 0;
+            mem_call <=0; 
+            mem_pcplus4 <= 32'h00000000;
         end
         else
         begin
@@ -43,6 +49,8 @@ module exe_mem( input clk,
             mem_MemtoReg <= exe_MemtoReg;
             mem_MemWrite <= exe_MemWrite;
             mem_RegWrite <= exe_RegWrite;
+            mem_call <= exe_call;
+            mem_pcplus4 <= exe_pcplus4;
         end
     end
 endmodule
