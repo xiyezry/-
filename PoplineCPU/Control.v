@@ -1,4 +1,4 @@
-module Control(Opcode,Funct,RegDst,MemRead,MemtoReg,ALUOp,MemWrite,ALUSrc,RegWrite,EXTOP,NPCOP,ShiftIndex,ShiftDirection,ALUasrc,call);
+module Control(Opcode,Funct,RegDst,MemRead,MemtoReg,ALUOp,MemWrite,ALUSrc,RegWrite,EXTOP,ShiftIndex,ShiftDirection,ALUasrc,call,IsBeq,IsBne,Jump,FullJump);
 	input [5:0] Opcode;    //指令操作码字段	
 	input [5:0] Funct;     //指令功能码字段
 	output RegDst;         //寄存器写输入选择 20-16为0,15-11为1.
@@ -8,13 +8,16 @@ module Control(Opcode,Funct,RegDst,MemRead,MemtoReg,ALUOp,MemWrite,ALUSrc,RegWri
 	output RegWrite;       //寄存器写信号
 	output ALUSrc;         //运算器B操作数选择
 	output EXTOP;          //拓展操作信号；0为0拓展 1为符号拓展
-	output [1:0] NPCOP;    //用以控制下一个输入PC指令的来源 00为PC+4;01为Branch；10为Jump；11则为直接从对应寄存器中读取指令
 	output [3:0] ALUOp;    //ALU运算选择
 	output ShiftIndex;     //选择移位器移动位数输入 0:Ins[10:6] 1:Ins[25:21]
 	output ShiftDirection; //移位方向 1为右 2为左
 	//output SArith;         //移位类型 1：算数移动 0：逻辑移动
 	output ALUasrc;        //运算器A操作数选择 0则直接从寄存器中读取 1则经过移位器处理
 	output call;           //约定jal jalr则call为1
+	output IsBeq;
+	output IsBne;
+	output Jump;
+	output FullJump;
 	// output SpLoad;         //若为1 则表示为lh lb lhu lbu指令
 	// output BorH;           //0代表字节 1代表半字
 	// output SorU;           //1为unsigned 0为signed
@@ -67,22 +70,25 @@ module Control(Opcode,Funct,RegDst,MemRead,MemtoReg,ALUOp,MemWrite,ALUSrc,RegWri
 	
 	
 	assign call = i_jal|i_jalr;
-	assign NPCOP[1] = i_j|i_jal|i_jr|i_jalr;
-	assign NPCOP[0] = i_beq|i_bne|i_jr|i_jalr;
 	assign RegDst = i_add|i_sub|i_and|i_or|i_slt|i_sltu|i_addu|i_subu|i_nor|i_sll|i_sllv|i_srl|i_srlv;
 	assign MemRead = i_lw;
 	assign MemtoReg = i_lw;
 	assign MemWrite = i_sw;
 	assign RegWrite = i_lw|i_add|i_sub|i_and|i_or|i_slt|i_sltu|i_addu|i_subu|i_addi|i_ori|i_nor|i_lui|i_andi|i_slti|i_sll|i_sllv|i_srl|i_srlv|i_jalr|i_jal;
-	assign ALUSrc = i_addi|i_ori|i_lw|i_sw|i_andi|i_slti;
+	assign ALUSrc = i_addi|i_ori|i_lw|i_sw|i_andi|i_slti|i_lui;
 	assign ALUOp[3] = i_nor|i_lui;
 	assign ALUOp[2] = i_or|i_slt|i_sltu|i_ori|i_nor|i_lui|i_slti;
-	assign ALUOp[1] = i_sub|i_and|i_sltu|i_subu|i_beq|i_nor|i_andi|i_bne;
+	assign ALUOp[1] = i_sub|i_and|i_sltu|i_subu|i_nor|i_andi;
 	assign ALUOp[0] = i_add|i_and|i_slt|i_addu|i_addi|i_lw|i_sw|i_andi|i_slti;
 	assign EXTOP = i_addi|i_lw|i_sw;
 	assign ShiftIndex = i_sllv|i_srlv;
 	assign ShiftDirection = i_srl|i_srlv; 
 	assign ALUasrc = i_sll|i_sllv|i_srl|i_srlv; 
+	assign IsBeq = i_beq;
+	assign IsBne = i_bne;
+	assign Jump = i_j|i_jal|i_jalr|i_jr;
+	assign FullJump = i_jr;
+	
 
 	
 endmodule
