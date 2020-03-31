@@ -15,7 +15,7 @@ module ForwardUnit(mem_RegWrite,wb_RegWrite,mem_RegisterRd,wb_RegisterRd,exe_Rs,
         if(mem_RegWrite&&mem_RegisterRd!=0&&mem_RegisterRd==exe_Rs)
             ForwardA=2'b10;
         else if(wb_RegWrite&&wb_RegisterRd!=0&&wb_RegisterRd==exe_Rs)
-            ForwardA=2'b00;
+            ForwardA=2'b01;
         else
             ForwardA=2'b00;
         if(mem_RegWrite&&mem_RegisterRd!=0&&mem_RegisterRd==exe_Rt)
