@@ -28,12 +28,14 @@ module HizardDetectionUnit(rst,inst,Branch,Jump,id_RegisterRs,id_RegisterRt,exe_
             Stall=1;
             flush = 0;
         end
+        /**
         else if (Branch) begin
             PCWrite = 0;
             IFIDWrite = 0;
             Stall = 1;
             flush = 0;
         end
+        **/
         else if(Branch||Jump)
         begin
             flush = 1;
