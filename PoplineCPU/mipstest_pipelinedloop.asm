@@ -18,20 +18,20 @@ call_a: j    a              # jump to a            10      08000015
         beq  $5, $7, end    # should not be taken  20      10a70018
         sltu $4, $3, $4     # $4 = (12 < 7) = 0    24      0064202b
 # Test if there is control hazard
-        beq  $4, $0, around # should be taken      28      10800003
+        beq  $4, $0, around # should be taken      28      10800003 //bug2
         addi $5, $0, 0      # should not happen    2c      20050000
         addi $5, $0, 0      # should not happen    30      20050000
         addi $5, $0, 0      # should not happen    34      20050000
 around: slt  $4, $7, $2     # $4 = 3 < 5 = 1       38      00e2202a
         addu $7, $4, $5     # $7 = 1 + 11 = 12     3c      00853821
         sub  $7, $7, $2     # $7 = 12 - 5 = 7      40      00e23822
-        sw   $7, 68($3)     # [80] = 7             44      ac670044
+        sw   $7, 68($3)     # [80] = 7             44      ac670044//bug3
         lw   $2, 80($0)     # $2 = [80] = 7        48      8c020050
         j    end            # should be taken      4c      08000021
         addi $2, $0, 1      # should not happen    50      20020001
 a:      sll  $7, $7, 2      # $7 = 3 << 2 = 12     54      00073880
 call_b: jal  b              # jump to b            58      0c000019
-        addi $31,$0,20      # $31 <= 20            5c      201f0014
+        addi $31,$0,20      # $31 <= 20            5c      201f0014 //！！！暂时有bug 因为数据冒险
         jr   $31            # return to call_a     60      03e00008
 b:      lui  $1, 0xFFAA     # $1 <= 0xFFAA0000     64      3c01ffaa
         slt  $1, $7, $1     # $1 <= 0              68      00e1082a
