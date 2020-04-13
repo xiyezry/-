@@ -87,7 +87,7 @@ module Control(Opcode,Funct,RegDst,MemRead,MemtoReg,ALUOp,MemWrite,ALUSrc,RegWri
 	assign IsBeq = i_beq;
 	assign IsBne = i_bne;
 	assign Jump = i_j|i_jal|i_jalr|i_jr;
-	assign FullJump = i_jr;
+	assign FullJump = i_jr|i_jalr;	//bug:最初没有加jalr
 	
 
 	
