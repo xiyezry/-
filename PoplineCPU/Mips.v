@@ -63,6 +63,11 @@ module Mips();
 //ForwardUnit
 	wire[1:0] ForwardA;
 	wire[1:0] ForwardB;
+//IDForwardUnit
+	wire[1:0] ForwardC;
+	wire[1:0] ForwardD;
+	wire[31:0] IDRealRs;
+	wire[31:0] IDRealRt;
 //else
 	wire[31:0] preRFDataIn;
 
@@ -123,7 +128,7 @@ module Mips();
 			//$readmemh( "C:/Users/xiye/Desktop/SCPU-student/extendedtest.dat" , U_IM.ins_mem); // load instructions into instruction memory
 			//$readmemh( "mipstest_extloop.dat" , U_IM.ins_mem); // load instructions into instruction memory
 			//$readmemh( "mipstestloopjal_sim.dat" , U_IM.ins_mem); // load instructions into instruction memory
-			$readmemh( "C:/Users/xiye/Desktop/popline/mipstest_pipelinedloop.dat" , U_IM.ins_mem); // load instructions into instruction memory
+			$readmemh( "C:/Users/xiye/Desktop/popline/mipstest_extloop.dat" , U_IM.ins_mem); // load instructions into instruction memory
 			clk = 1;
 			rst = 0;
 			#5 rst = 1;
@@ -162,12 +167,15 @@ module Mips();
 		if_id U_if_id(.clk(clk),.rst(rst),.flush(flush),.ifid_write(ifid_write),.if_pc(PC),.if_inst(Ins),.if_pcplus4(PCPLUS4),.id_pc(id_pc),.id_inst(id_inst),.id_pcplus4(id_pcplus4));
 
 //ID阶段
-	//TODO beq bne指令的判断
 	//寄存器堆实例化
 		//已修复BUG：RFWR输入信号错误 最初输入成RegWrite了 气死了！！！！
 		RF U_Rf(.clk(clk),.rst(rst),.RFWr(wb_RegWrite),.A1(RFR1),.A2(RFR2),.A3(RFWS),.WD(RFDataIn),.RD1(RFDataOut1),.RD2(RFDataOut2));
 	//控制器实例化
 		Control U_Control(.Opcode(op),.Funct(funct),.RegDst(RegDst),.MemRead(MemRead),.MemtoReg(MemToReg),.ALUOp(ALUop),.MemWrite(MemWrite),.ALUSrc(ALUsrc),.RegWrite(RegWrite),.EXTOP(EXTOP),.ShiftIndex(ShiftIndex),.ShiftDirection(ShiftDirection),.ALUasrc(ALUasrc),.call(call),.IsBeq(IsBeq),.IsBne(IsBne),.Jump(Jump),.FullJump(FullJump));
+	//ID阶段旁路控制单元
+		IDForwardUnit U_IDForwardUnit(exe_RegWrite,mem_RegWrite,exe_RegisterRd,mem_RegisterRd,RFR1,RFR2,ForwardC,ForwardD);
+		mux4_32 IDRealRS(RFDataOut1,mem_ALUOUT,ALUDataOut,32'h00000000,ForwardC,IDRealRs);
+		mux4_32 IDRealRT(RFDataOut2,mem_ALUOUT,ALUDataOut,32'h00000000,ForwardD,IDRealRt);
 	//扩展器实例化
 		EXT U_Ext(.Imm16(EXTDataIn),.EXTOp(EXTOP),.Imm32(EXTDataOut));
 	//写寄存器2路选择器（一）用于确定是写入20-16位还是15-11位 其中控制信号为RegDst
@@ -176,9 +184,9 @@ module Mips();
 	//PCBranch实例化
 		PCBranch U_PCBranch(id_pcplus4,EXTDataIn,PCBranch);
 	//PCJump实例化
-		PCJump U_PCJump(PCPLUS4,JAddOffset,RFDataOut1,FullJump,PCJump);
+		PCJump U_PCJump(PCPLUS4,JAddOffset,IDRealRs,FullJump,PCJump);
 	//RsRtIsEqual实例化
-		RsRtIsEqual U_RsRtIsEqual(IsBeq,IsBne,RFDataOut1,RFDataOut2,Branch);
+		RsRtIsEqual U_RsRtIsEqual(IsBeq,IsBne,IDRealRs,IDRealRt,Branch);
 	//HizardDetectionUnit实例化
 		HizardDetectionUnit U_HizardDetectionUnit(rst,id_inst,Branch,Jump,RFR1,RFR2,exe_RegisterRt,exe_MemRead,PCWrite,ifid_write,stall,flush);
 	//ID-EXE寄存器实例化
@@ -206,11 +214,11 @@ module Mips();
 	//ALU实例化
 		alu U_Alu(.A(ALUDataInA), .B(ALUDataInB), .ALUOp(exe_ALUOp), .C(ALUDataOut));
 	//EXE-MEM寄存器实例化
-		exe_mem U_exe_mem(clk,rst,exe_inst,exe_RFRD2,ALUDataOut,exe_RegisterRd,exe_RegDst,exe_MemRead,exe_MemtoReg,exe_MemWrite,exe_RegWrite,exe_call,exe_pcplus4,mem_inst,mem_RFRD2,mem_ALUOUT,mem_RegisterRd,mem_RegDst,mem_MemRead,mem_MemtoReg,mem_MemWrite,mem_RegWrite,mem_call,mem_pcplus4);
+		exe_mem U_exe_mem(clk,rst,exe_inst,RealRt,ALUDataOut,exe_RegisterRd,exe_RegDst,exe_MemRead,exe_MemtoReg,exe_MemWrite,exe_RegWrite,exe_call,exe_pcplus4,mem_inst,mem_RFRD2,mem_ALUOUT,mem_RegisterRd,mem_RegDst,mem_MemRead,mem_MemtoReg,mem_MemWrite,mem_RegWrite,mem_call,mem_pcplus4);
 
 //MEM阶段
 	//DM实例化
-		datamemory U_Dmem(.DMAdd(DMAdd),.DataIn(mem_RFRD2),.DataOut(DMDataOut),.DMW(exe_MemWrite),.DMR(exe_MemRead),.clk(clk));
+		datamemory U_Dmem(.DMAdd(DMAdd),.DataIn(mem_RFRD2),.DataOut(DMDataOut),.DMW(mem_MemWrite),.DMR(mem_MemRead),.clk(clk));//bug:write和read信号读成了exe阶段的
 	//MEM-WB寄存器实例化
 		mem_wb U_mem_wb(clk,rst,mem_inst,mem_ALUOUT,DMDataOut,mem_RegisterRd,mem_RegDst,mem_MemtoReg,mem_RegWrite,mem_call,mem_pcplus4,wb_inst,wb_ALUOUT,wb_MEMOUT,wb_RegisterRd,wb_RegDst,wb_MemtoReg,wb_RegWrite,wb_call,wb_pcplus4);
 
